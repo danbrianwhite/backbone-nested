@@ -1,90 +1,12 @@
-var deepCopy,
-    equal,
-    isObject;
+var equal, isObject;
 /* jshint ignore:start*/
-// https://gist.github.com/c7x43t/38afee87bb7391efb9ac27a3c282e5ed#file-deepcopy-min-js
-deepCopy = function (a) {
-    if (('object' !== typeof a || null === a) && !(a instanceof Function)) return a;
-    var b,
-        d;
-    var f = a.constructor;
-    if (a[ Symbol.iterator ] instanceof Function) {
-        var g = a.length;
-        switch (b = new f(g), f) {
-            case Set:
-                for (var h of a) b.add(deepCopy(h));
-                break;
-            case Map:
-                for (var [ h, j ]of a) b.set(h, deepCopy(j));
-        }
-        for (var h of Object.keys(a)) b[ h ] = deepCopy(a[ h ]);
-    } else if (d = Object.getOwnPropertyNames(a), f !== Object) {
-        switch (f) {
-            case Function:
-                var g = a.toString();
-                b = null === / \[native code\] /.exec(g) ? new f(/^.*?{(.*)}/.exec(g)[ 1 ]) : a;
-                break;
-            case RegExp:
-                b = new f(a.valueOf());
-                break;
-            case Date:
-                b = new f(a);
-                break;
-            case ArrayBuffer:
-                b = new f(new Int8Array(a).length);
-                break;
-            default:
-                b = a;
-        }
-        for (var g of d) b.hasOwnProperty(g) || (b[ g ] = deepCopy(a[ g ]));
-    } else {
-        b = {};
-        for (var g of d) b[ g ] = deepCopy(a[ g ]);
-    }
-    for (var g of Object.getOwnPropertySymbols(a)) b[ g ] = deepCopy(a[ g ]);
-    return b;
-};
 
 //https://raw.githubusercontent.com/epoberezkin/fast-deep-equal/master/index.js
 var isArray = Array.isArray;
 var keyList = Object.keys;
 var hasProp = Object.prototype.hasOwnProperty;
 
-equal = function (a, b) {
-    if (a === b) return true;
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
-        var arrA = isArray(a),
-            arrB = isArray(b),
-            i,
-            length,
-            key;
-        if (arrA && arrB) {
-            length = a.length;
-            if (length != b.length) return false;
-            for (i = length; i-- !== 0;) if (!equal(a[ i ], b[ i ])) return false;
-            return true;
-        }
-        if (arrA != arrB) return false;
-        var dateA = a instanceof Date,
-            dateB = b instanceof Date;
-        if (dateA != dateB) return false;
-        if (dateA && dateB) return a.getTime() == b.getTime();
-        var regexpA = a instanceof RegExp,
-            regexpB = b instanceof RegExp;
-        if (regexpA != regexpB) return false;
-        if (regexpA && regexpB) return a.toString() == b.toString();
-        var keys = keyList(a);
-        length = keys.length;
-        if (length !== keyList(b).length) return false;
-        for (i = length; i-- !== 0;) if (!hasProp.call(b, keys[ i ])) return false;
-        for (i = length; i-- !== 0;) {
-            key = keys[ i ];
-            if (!equal(a[ key ], b[ key ])) return false;
-        }
-        return true;
-    }
-    return a !== a && b !== b;
-};
+equal = function(a, b) { if (a === b) return true; if (a && b && typeof a == 'object' && typeof b == 'object') { var arrA = isArray(a) , arrB = isArray(b) , i , length , key; if (arrA && arrB) { length = a.length; if (length != b.length) return false; for (i = length; i-- !== 0;) if (!equal(a[i], b[i])) return false; return true; } if (arrA != arrB) return false; var dateA = a instanceof Date , dateB = b instanceof Date; if (dateA != dateB) return false; if (dateA && dateB) return a.getTime() == b.getTime(); var regexpA = a instanceof RegExp , regexpB = b instanceof RegExp; if (regexpA != regexpB) return false; if (regexpA && regexpB) return a.toString() == b.toString(); var keys = keyList(a); length = keys.length; if (length !== keyList(b).length) return false; for (i = length; i-- !== 0;) if (!hasProp.call(b, keys[i])) return false; for (i = length; i-- !== 0;) { key = keys[i]; if (!equal(a[key], b[key])) return false; } return true; } return a!==a && b!==b; };
 
 
 isObject = function (obj) {
@@ -101,9 +23,6 @@ isObject = function (obj) {
  * Copyright (c) 2011-2019 Aidan Feldman && Daniel White
  * MIT Licensed (LICENSE)
  */
-
-
-var splitRegex = /\.|\[|\]/g;
 
 /*global define, require, module */
 (function (root, factory) {
@@ -440,38 +359,15 @@ var splitRegex = /\.|\[|\]/g;
         // class methods
 
         attrPath: function (attrStrOrPath) {
-            /* var path;
-
-             if (typeof attrStrOrPath === 'string') {
-                 path = (attrStrOrPath === '') ? [ '' ] : attrStrOrPath.split(splitRegex);
-                 path = path.map(function (val) {
-                     // convert array accessors to numbers
-                     return isNaN(val) ? val : parseInt(val, 10);
-                 });
-             } else {
-                 path = attrStrOrPath;
-             }
-
-             return path;
-             */
-
             return [ attrStrOrPath ];
         },
 
         createAttrStr: function (attrPath) {
-            /*var attrStr = attrPath[ 0 ];
-
-            for (var i = 1; i < attrPath.length; i++) {
-                var attr = attrPath[ i ];
-                attrStr += !isNaN(attr) ? ('[' + attr + ']') : ('.' + attr);
-            }
-
-            return attrStr;*/
             return attrPath[ 0 ];
         },
 
         deepClone: function (obj) {
-            return deepCopy(obj);
+            return JSON.parse(JSON.stringify(obj));
         },
 
         walkPath: function (obj, attrPath, callback, scope) {
