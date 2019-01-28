@@ -1,5 +1,5 @@
 {
-  "name": "backbone-nested",
+  "name": "backbone-nested-danbrianwhite",
   "version": "2.0.4",
   "description": "A plugin to make Backbone.js keep track of nested attributes.",
   "scripts": {
@@ -20,11 +20,11 @@
     "grunt-cli": "*",
     "bower": "*"
   },
-  "homepage": "http://afeld.github.com/backbone-nested/",
+  "homepage": "http://danbrianwhite.github.com/backbone-nested/",
   "main": "backbone-nested.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/afeld/backbone-nested.git"
+    "url": "https://github.com/danbrianwhite/backbone-nested.git"
   },
-  "github": "https://github.com/afeld/backbone-nested"
+  "github": "https://github.com/danbrianwhite/backbone-nested"
 }
